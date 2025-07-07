@@ -415,6 +415,7 @@ jobs:
             mkdir -p /go-caches
             tar -xzpf /host/go-build-cache.tar.gz --same-owner -C /go-caches || true
             tar -xzpf /host/go-mod-cache.tar.gz --same-owner -C /go-caches || true
+            ls -la /go-caches
 
       - name: Runtime privileged tests
         id: run-tests

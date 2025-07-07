@@ -208,6 +208,8 @@ jobs:
           mv "${GOMODCACHE}/go-mod-cache.tar.gz" /tmp
           sudo tar -xzpf "/tmp/go-build-cache.tar.gz" --same-owner -C "/tmp/.cache/go/.cache" || true
           sudo tar -xzpf "/tmp/go-mod-cache.tar.gz" --same-owner -C "/tmp/.cache/go "|| true
+          ls -la /tmp/.cache/go/.cache
+          ls -la /tmp/.cache/go/pkg
 
       - name: Run integration tests
         id: run-tests
