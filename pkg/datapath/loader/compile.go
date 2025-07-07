@@ -104,6 +104,7 @@ var (
 		"-Wno-address-of-packed-member",
 		"-Wno-unknown-warning-option",
 		"-Wno-gnu-variable-sized-type-not-at-end",
+		"-Wdeclaration-after-statement",
 		"-Wimplicit-int-conversion",
 		"-Wenum-conversion",
 		"-Wimplicit-fallthrough"}
