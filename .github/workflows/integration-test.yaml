@@ -204,10 +204,10 @@ jobs:
           GOMODCACHE: "/tmp/.cache/go/pkg"
         shell: bash
         run: |
-          mv "${GOCACHE}/go-build-cache.tar.gz" /tmp
-          mv "${GOMODCACHE}/go-mod-cache.tar.gz" /tmp
-          sudo tar -xzpf "/tmp/go-build-cache.tar.gz" --same-owner -C "/tmp/.cache/go/.cache" || true
-          sudo tar -xzpf "/tmp/go-mod-cache.tar.gz" --same-owner -C "/tmp/.cache/go "|| true
+          mv "${GOCACHE}/go-build-cache.tar.gz" /tmp || true
+          mv "${GOMODCACHE}/go-mod-cache.tar.gz" /tmp || true
+          tar -xzpf "/tmp/go-build-cache.tar.gz" -C "/tmp/.cache/go/.cache" || true
+          tar -xzpf "/tmp/go-mod-cache.tar.gz" -C "/tmp/.cache/go "|| true
           ls -la /tmp/.cache/go/.cache
           ls -la /tmp/.cache/go/pkg
 
