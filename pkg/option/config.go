@@ -1377,7 +1377,7 @@ type DaemonConfig struct {
 
 	// MaxControllerInterval is the maximum value for a controller's
 	// RunInterval. Zero means unlimited.
-	MaxControllerInterval int
+	MaxControllerInterval uint
 
 	// HTTP403Message is the error message to return when a HTTP 403 is returned
 	// by the proxy, if L7 policy is configured.
@@ -2593,7 +2593,6 @@ func (c *DaemonConfig) Populate(logger *slog.Logger, vp *viper.Viper) {
 	c.ClusterHealthPort = vp.GetInt(ClusterHealthPort)
 	c.ClusterMeshHealthPort = vp.GetInt(ClusterMeshHealthPort)
 	c.AllowICMPFragNeeded = vp.GetBool(AllowICMPFragNeeded)
-	c.AllowLocalhost = vp.GetString(AllowLocalhost)
 	c.AnnotateK8sNode = vp.GetBool(AnnotateK8sNode)
 	c.AutoCreateCiliumNodeResource = vp.GetBool(AutoCreateCiliumNodeResource)
 	c.BPFRoot = vp.GetString(BPFRoot)
@@ -2734,6 +2733,14 @@ func (c *DaemonConfig) Populate(logger *slog.Logger, vp *viper.Viper) {
 	c.EnableIPSecEncryptedOverlay = vp.GetBool(EnableIPSecEncryptedOverlay)
 	c.BootIDFile = vp.GetString(BootIDFilename)
 	c.EnableExtendedIPProtocols = vp.GetBool(EnableExtendedIPProtocols)
+
+	c.AllowLocalhost = strings.ToLower(vp.GetString(AllowLocalhost))
+	switch c.AllowLocalhost {
+	case AllowLocalhostAlways, AllowLocalhostAuto, AllowLocalhostPolicy:
+	default:
+		logging.Fatal(logger, fmt.Sprintf("Invalid setting for --allow-localhost, must be { %s, %s, %s }",
+			AllowLocalhostAuto, AllowLocalhostAlways, AllowLocalhostPolicy))
+	}
 
 	c.ServiceNoBackendResponse = vp.GetString(ServiceNoBackendResponse)
 	switch c.ServiceNoBackendResponse {
@@ -3026,7 +3033,7 @@ func (c *DaemonConfig) Populate(logger *slog.Logger, vp *viper.Viper) {
 	c.HTTP403Message = vp.GetString(HTTP403Message)
 	c.K8sNamespace = vp.GetString(K8sNamespaceName)
 	c.AgentNotReadyNodeTaintKey = vp.GetString(AgentNotReadyNodeTaintKeyName)
-	c.MaxControllerInterval = vp.GetInt(MaxCtrlIntervalName)
+	c.MaxControllerInterval = vp.GetUint(MaxCtrlIntervalName)
 	c.EndpointQueueSize = sanitizeIntParam(logger, vp, EndpointQueueSize, defaults.EndpointQueueSize)
 	c.EnableICMPRules = vp.GetBool(EnableICMPRules)
 	c.UseCiliumInternalIPForIPsec = vp.GetBool(UseCiliumInternalIPForIPsec)
